@@ -26,3 +26,11 @@ class BoardView(APIView):
             return  Response(board_ser.data,status=201)
         else:
             return  Response(board_ser.errors,status=400)
+
+
+class BoardSingleView(generics.RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+
+    serializer_class = BoardSerializer
+    queryset = Board.objects.all()
