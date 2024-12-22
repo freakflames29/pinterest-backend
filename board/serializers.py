@@ -1,11 +1,14 @@
-from rest_framework.serializers import  ModelSerializer
-from .models import  Board
+from rest_framework.serializers import ModelSerializer, SerializerMethodField
+from .models import Board
+
 
 class BoardSerializer(ModelSerializer):
+    user_name = SerializerMethodField(read_only=True)
+
+    def get_user_name(self, obj):
+        return obj.user.username
+
     class Meta:
         model = Board
-        fields = "__all__"
+        fields = ["id", "name", "user", "user_name"]
         read_only_fields = ["user"]
-
-
-
