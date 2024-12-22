@@ -11,6 +11,6 @@ class PinAdmin(admin.ModelAdmin):
         x =   ", ".join([el.name for el in obj.boards.all() ])
         print("xxxxxxxxxxx====",x)
         return  x
-    
+
     display_boards.short_description = "Boards"
 

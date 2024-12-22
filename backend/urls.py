@@ -9,4 +9,5 @@ urlpatterns = [
     path("auth/", include("myauth.urls")),
     path("board/", include("board.urls")),
     path("pin/", include("pin.urls")),
+    path("comments/", include("comment.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
