@@ -1,14 +1,14 @@
 from django.contrib.auth import authenticate
-from django.shortcuts import render
+
 from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework.views import APIView
-from rest_framework import status
+
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 from django.db import IntegrityError, Error
 from rest_framework import status
-from rest_framework import generics
-from rest_framework.serializers import ModelSerializer
+# from rest_framework import generics
+# from rest_framework.serializers import ModelSerializer
 
 class UserView(APIView):
     def post(self, rq):
