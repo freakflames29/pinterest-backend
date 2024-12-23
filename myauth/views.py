@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate
 from django.shortcuts import render
 from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework.views import APIView
@@ -8,7 +9,6 @@ from django.db import IntegrityError, Error
 from rest_framework import status
 from rest_framework import generics
 from rest_framework.serializers import ModelSerializer
-
 
 class UserView(APIView):
     def post(self, rq):
@@ -40,3 +40,25 @@ class UserView(APIView):
         except Exception as e:
             print("Error is ", e)
             return Response({"error": "Username, password , email required"}, status=400)
+
+class LoginView(APIView):
+    def post(self,rq):
+        try:
+            username = rq.data['username']
+            password  = rq.data['password']
+
+            user = authenticate(rq,username=username,password=password)
+            if user:
+                token = str(AccessToken.for_user(user))
+                data = {
+                    "id":user.id,
+                    "username":user.username,
+                    "email": user.email,
+                    "token":token
+
+                }
+                return Response(data,status=200)
+            else:
+                return Response({"error":"Username / password is incorrect"},status=400)
+        except:
+            return  Response({"error":"Username and password is required"},status=400)
