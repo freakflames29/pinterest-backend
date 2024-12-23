@@ -4,8 +4,10 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from django.contrib.auth.models import User
-from django.db import IntegrityError
+from django.db import IntegrityError, Error
 from rest_framework import status
+from rest_framework import generics
+from rest_framework.serializers import ModelSerializer
 
 
 class UserView(APIView):
@@ -30,6 +32,11 @@ class UserView(APIView):
         except IntegrityError as e:
             return Response({"error": "Username already exists"}, status=status.HTTP_401_UNAUTHORIZED)
 
+        except Error as err:
+            return Response(
+                {"error": err.message},
+                status=400
+            )
         except Exception as e:
             print("Error is ", e)
             return Response({"error": "Username, password , email required"}, status=400)

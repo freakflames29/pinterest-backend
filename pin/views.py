@@ -4,11 +4,12 @@ from rest_framework import generics
 from .serializers import PinSerializer
 from .models import Pin
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter
 from rest_framework.authentication import BasicAuthentication
 from rest_framework import  mixins
+from .permissions import IsUser
 
 class PinListView(generics.ListAPIView):
     queryset = Pin.objects.all()
@@ -33,3 +34,11 @@ class PinCreateView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+class PinSingleView(generics.RetrieveUpdateAPIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly,IsUser]
+
+    serializer_class = PinSerializer
+    queryset = Pin.objects.all()
+
