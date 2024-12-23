@@ -4,13 +4,13 @@ from rest_framework import generics
 from .serializers import PinSerializer
 from .models import Pin
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter
 from rest_framework.authentication import BasicAuthentication
-from rest_framework import  mixins
+from rest_framework import mixins
 from .permissions import IsUser
-from comment.models import  Comment
+from comment.models import Comment
 from comment.serializers import CommentSerializer
 
 
@@ -42,19 +42,37 @@ class PinCreateView(generics.CreateAPIView):
 # list pin based on PK
 class PinSingleView(generics.RetrieveUpdateAPIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticatedOrReadOnly,IsUser]
+    permission_classes = [IsAuthenticatedOrReadOnly, IsUser]
 
     serializer_class = PinSerializer
     queryset = Pin.objects.all()
 
+
 class CommentListView(APIView):
-    def get(self,rq,pk):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    authentication_classes = [JWTAuthentication]
+
+    def get(self, rq, pk):
         try:
-            pin= Pin.objects.get(pk=pk)
+            pin = Pin.objects.get(pk=pk)
             comments = pin.comments.all()
-            comments_ser = CommentSerializer(comments,many=True)
-            return  Response(comments_ser.data,status=200)
+            comments_ser = CommentSerializer(comments, many=True)
+            return Response(comments_ser.data, status=200)
         except:
-            return  Response({"error":"No pins found"},status=404)
+            return Response({"error": "No pins found"}, status=404)
 
+    def post(self, rq, pk):
+        try:
+            pin = Pin.objects.get(pk=pk)
+            comment_ser = CommentSerializer(data=rq.data)
+            print(pin,"*"*15)
+            print(comment_ser.data,"*"*15)
+            if comment_ser.is_valid():
+                comment_ser.save(user=rq.user, pin=pin)
+                return Response(comment_ser.data, status=200)
+            else:
+                return Response(comment_ser.errors,status=400)
+        except Exception as  e:
+            print(e)
 
+            return Response({"error": "No pins found"}, status=404)
