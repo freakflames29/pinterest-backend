@@ -47,7 +47,7 @@ class PinSingleView(generics.RetrieveUpdateAPIView):
     serializer_class = PinSerializer
     queryset = Pin.objects.all()
 
-
+# List all comments post/id/comments (get,post allowed)
 class CommentListView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     authentication_classes = [JWTAuthentication]
@@ -66,7 +66,7 @@ class CommentListView(APIView):
             pin = Pin.objects.get(pk=pk)
             comment_ser = CommentSerializer(data=rq.data)
             print(pin,"*"*15)
-            print(comment_ser.data,"*"*15)
+
             if comment_ser.is_valid():
                 comment_ser.save(user=rq.user, pin=pin)
                 return Response(comment_ser.data, status=200)
