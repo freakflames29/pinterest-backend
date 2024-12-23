@@ -6,11 +6,14 @@ from .models import  Pin
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import  Response
+from rest_framework.filters import SearchFilter
 
 
 class PinListView(generics.ListAPIView):
     queryset = Pin.objects.all()
     serializer_class = PinSerializer
+    filter_backends = [SearchFilter]
+    search_fields = ["title"]
 
 
 class PinCreateView(APIView):

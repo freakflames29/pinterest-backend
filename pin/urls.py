@@ -2,5 +2,6 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path("",PinListView.as_view())
+    path("",PinListView.as_view()),
+    path("create/",PinCreateView.as_view()),
 ]

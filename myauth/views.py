@@ -23,4 +23,4 @@ class UserView(APIView):
             "email": user.email,
             "token": token
         }
-        return  Response(data,status=status.HTTP_200_OK)
+        return Response(data, status=status.HTTP_200_OK)

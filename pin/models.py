@@ -11,7 +11,7 @@ class Pin(models.Model):
     desc = models.TextField()
     image = models.ImageField(upload_to="images/")
     boards = models.ManyToManyField(
-        Board, related_name="board_pins", blank=True)
+        Board, related_name="pins", blank=True)
 
     def __str__(self):
         return self.title
