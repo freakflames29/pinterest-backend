@@ -7,3 +7,5 @@ class CommentListView(generics.ListAPIView):
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
 
+
+

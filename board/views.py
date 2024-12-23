@@ -53,9 +53,5 @@ class BoardPinsView(APIView):
             pin_ser = PinSerializer(board_pins, many=True)
             return Response(pin_ser.data, status=200)
 
-
-
-
-
         except Exception as e:
             return Response({"error": "No board found"}, status=400)

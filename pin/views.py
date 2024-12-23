@@ -10,6 +10,9 @@ from rest_framework.filters import SearchFilter
 from rest_framework.authentication import BasicAuthentication
 from rest_framework import  mixins
 from .permissions import IsUser
+from comment.models import  Comment
+from comment.serializers import CommentSerializer
+
 
 class PinListView(generics.ListAPIView):
     queryset = Pin.objects.all()
@@ -43,4 +46,15 @@ class PinSingleView(generics.RetrieveUpdateAPIView):
 
     serializer_class = PinSerializer
     queryset = Pin.objects.all()
+
+class CommentListView(APIView):
+    def get(self,rq,pk):
+        try:
+            pin= Pin.objects.get(pk=pk)
+            comments = pin.comments.all()
+            comments_ser = CommentSerializer(comments,many=True)
+            return  Response(comments_ser.data,status=200)
+        except:
+            return  Response({"error":"No pins found"},status=404)
+
 
