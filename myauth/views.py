@@ -4,6 +4,8 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from django.contrib.auth.models import User
+from django.db import IntegrityError
+from rest_framework import status
 
 
 class UserView(APIView):
@@ -12,8 +14,6 @@ class UserView(APIView):
             username = rq.data['username']
             email = rq.data['email']
             password = rq.data['password']
-
-
 
             user = User(username=username, email=email)
             user.set_password(password)
@@ -27,5 +27,9 @@ class UserView(APIView):
                 "token": token
             }
             return Response(data, status=status.HTTP_200_OK)
-        except:
-            return  Response({"msg":"Username, password , email required"},status=400)
+        except IntegrityError as e:
+            return Response({"error": "Username already exists"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        except Exception as e:
+            print("Error is ", e)
+            return Response({"error": "Username, password , email required"}, status=400)
