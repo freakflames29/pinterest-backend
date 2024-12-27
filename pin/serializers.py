@@ -4,7 +4,7 @@ from .models import Pin
 
 class PinSerializer(ModelSerializer):
     username = SerializerMethodField(read_only=True)
-    photo_url = SerializerMethodField(read_only=True)
+    # photo_url = SerializerMethodField(read_only=True)
 
     def get_username(self, obj):
         return obj.user.username
@@ -22,5 +22,5 @@ class PinSerializer(ModelSerializer):
     class Meta:
         model = Pin
         fields = ["id", "title", "link", "desc",
-                  "user", "username", "image","photo_url"]
+                  "user", "username", "image"]
         read_only_fields = ["user"]

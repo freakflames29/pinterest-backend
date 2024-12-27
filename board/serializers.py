@@ -4,7 +4,7 @@ from pin.serializers import PinSerializer
 
 class BoardSerializer(ModelSerializer):
     user_name = SerializerMethodField(read_only=True)
-    pins =PinSerializer(read_only=True,many=True)
+    pins = PinSerializer(read_only=True,many=True)
 
     def get_user_name(self, obj):
         return obj.user.username
