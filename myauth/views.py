@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate
 
-from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework_simplejwt.tokens import AccessToken,RefreshToken
 from rest_framework.views import APIView
 
 from rest_framework.response import Response
@@ -20,13 +20,15 @@ class UserView(APIView):
             user = User(username=username, email=email)
             user.set_password(password)
             user.save()
-            token = str(AccessToken.for_user(user))
+            refresh =RefreshToken.for_user(user)
+            token = str(refresh.access_token)
 
             data = {
                 "id": user.id,
                 "username": user.username,
                 "email": user.email,
-                "token": token
+                "token": token,
+                "refresh":str(refresh)
             }
             return Response(data, status=status.HTTP_200_OK)
         except IntegrityError as e:
@@ -49,12 +51,14 @@ class LoginView(APIView):
 
             user = authenticate(rq,username=username,password=password)
             if user:
-                token = str(AccessToken.for_user(user))
+                refresh =RefreshToken.for_user(user)
+                token = str(refresh.access_token)
                 data = {
                     "id":user.id,
                     "username":user.username,
                     "email": user.email,
-                    "token":token
+                    "token":token,
+                    "refresh":str(refresh)
 
                 }
                 return Response(data,status=200)
