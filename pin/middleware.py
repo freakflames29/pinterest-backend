@@ -5,7 +5,7 @@ class DelayMiddleware:
         
     def __call__(self,rq):
         response = self.get_response(rq)
-        time.sleep(0)
+        time.sleep(1)
         return response
         
         

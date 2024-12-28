@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from pin.models import  Pin
 
 from pin.serializers import PinSerializer
 
@@ -72,3 +73,22 @@ class BoardPinsView(APIView):
 
         except Exception as e:
             return Response({"error": "No board found"}, status=400)
+
+
+
+#  add pin to board
+
+class AddPinToBoardView(APIView):
+    def post(self,rq,pinid,boardid):
+        # return Response("ok",status=200)
+        try:
+            board = Board.objects.get(pk=boardid)
+            pin = Pin.objects.get(pk=pinid)
+
+            board.pins.add(pin)
+
+            return Response({"msg":"added"},status=200)
+
+        except:
+            return Response({"error":"Pin / Board is not correct"},status=400)
+
