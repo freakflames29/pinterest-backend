@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from django.contrib.auth.models import User
 from django.db import IntegrityError, Error
 from rest_framework import status
-# from rest_framework import generics
+from rest_framework import generics
 # from rest_framework.serializers import ModelSerializer
 
 class UserView(APIView):
@@ -66,3 +66,16 @@ class LoginView(APIView):
                 return Response({"error":"Username / password is incorrect"},status=400)
         except:
             return  Response({"error":"Username and password is required"},status=400)
+
+
+
+# profile page
+
+# class ProfileView(APIView):
+#     def get(self,rq,pk):
+#         try:
+#             user = User.objects.get(pk=1)
+            
+#         except:
+#             return Response({"error":"User not exists"},status=404)
+    
