@@ -68,7 +68,7 @@ class BoardPinsView(APIView):
             board = Board.objects.get(pk=pk)
             board_pins = board.pins.all()
 
-            pin_ser = PinSerializer(board_pins, many=True)
+            pin_ser = PinSerializer(board_pins, many=True,context={"request":rq})
             return Response(pin_ser.data, status=200)
 
         except Exception as e:
