@@ -77,3 +77,15 @@ class CommentListView(APIView):
             print(e)
 
             return Response({"error": "No pins found"}, status=404)
+
+
+
+# views for list of pin created by the user
+class UserPinsView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+    
+    def get(self,rq):
+        pins = rq.user.pins.all()
+        pin_ser = PinSerializer(pins,many=True,context={"request":rq})
+        return Response(pin_ser.data,status=200)

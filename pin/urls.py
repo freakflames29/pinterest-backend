@@ -6,5 +6,6 @@ urlpatterns = [
     path("create/",PinCreateView.as_view()),
     path("<int:pk>/",PinSingleView.as_view()),
     path("<int:pk>/comments/",CommentListView.as_view()),
+    path("user/created/",UserPinsView.as_view()),
 
 ]
