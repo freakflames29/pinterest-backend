@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'board',
     'myauth',
     'pin',
-    'comment'
+    'comment',
+    'userprofile'
 ]
 
 MIDDLEWARE = [
