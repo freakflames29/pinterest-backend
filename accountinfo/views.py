@@ -7,7 +7,6 @@ from rest_framework import generics
 from rest_framework.response import Response
 from .models import AccountInfo
 
-
 class ProfileGetView(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
@@ -20,9 +19,6 @@ class ProfilePostView(APIView):
     def post(self,rq):
         print(rq.user)
         print("Data:-",rq.data)
-        
-        
-        
         
         accser = AccountInfoSerializer(data=rq.data,context={"request":rq})
         if accser.is_valid():
