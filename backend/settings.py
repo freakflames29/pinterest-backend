@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'myauth',
     'pin',
     'comment',
+    # 'userprofile'
+    'accountinfo',
 ]
 
 MIDDLEWARE = [
