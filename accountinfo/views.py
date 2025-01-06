@@ -8,12 +8,15 @@ from rest_framework.response import Response
 from .models import AccountInfo
 from django.db.utils import IntegrityError
 from .permissions import IsOwner
-
-class ProfileGetView(generics.RetrieveAPIView):
+from django.contrib.auth.models import User
+class ProfileGetView(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
-    serializer_class = AccountInfoSerializer
-    queryset = AccountInfo.objects.all()
+    def get(self,rq):
+        info  =  rq.user.info
+        infoser = AccountInfoSerializer(info,context={"request":rq})
+        return Response(infoser.data,status=200)
+
 
 class ProfilePostView(APIView):
     permission_classes = [IsAuthenticated]
@@ -59,3 +62,17 @@ class ProfileUpdateView(APIView):
         except Exception as e:
             return Response({"error":"Something went wrong"},status=400)
             
+class ProfileUpdateV2(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+    
+    def patch(self,rq):
+        info = rq.user.info
+
+        info_ser = AccountInfoSerializer(info,data=rq.data,partial=True)
+        if info_ser.is_valid():
+            info_ser.save()
+            return Response(info_ser.data,status=200)
+        else:
+            return Response(info_ser.errors,data=400)
+        

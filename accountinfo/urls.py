@@ -3,8 +3,9 @@ from .views import *
 
 
 urlpatterns = [
-    path("<int:pk>/",ProfileGetView.as_view()),
+    path("",ProfileGetView.as_view()),
     path("create/",ProfilePostView.as_view()),
     path("<int:pk>/edit/",ProfileUpdateView.as_view()),
+    path("update/",ProfileUpdateV2.as_view()),
 ]
 
