@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.response import Response
 from .models import AccountInfo
+from django.db.utils import IntegrityError
 
 class ProfileGetView(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated]
@@ -20,10 +21,15 @@ class ProfilePostView(APIView):
         print(rq.user)
         print("Data:-",rq.data)
         
-        accser = AccountInfoSerializer(data=rq.data,context={"request":rq})
-        if accser.is_valid():
-            accser.save(user = rq.user)
-            return Response(accser.data,status=201)
-        else:
-            return Response(accser.errors,status=400)
+        try:
+            accser = AccountInfoSerializer(data=rq.data,context={"request":rq})
+            if accser.is_valid():
+                accser.save(user = rq.user)
+                return Response(accser.data,status=201)
+            else:
+                return Response(accser.errors,status=400)
+        except IntegrityError as ie:
+            return Response({"error":"You already created the profile"},status=400)
+        except:
+            return Response({"error":"Something went wrong"},status=400)
        
