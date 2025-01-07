@@ -13,9 +13,14 @@ class ProfileGetView(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
     def get(self,rq):
-        info  =  rq.user.info
-        infoser = AccountInfoSerializer(info,context={"request":rq})
-        return Response(infoser.data,status=200)
+        try:
+            info  =  rq.user.info
+            infoser = AccountInfoSerializer(info,context={"request":rq})
+            return Response(infoser.data,status=200)
+        except AccountInfo.DoesNotExist as e :
+            return Response({"error":"Your profile is not available, kindly create one"},status=404)
+        except:
+            return Response({"error":"Something went wrong"},status=400)
 
 
 class ProfilePostView(APIView):
