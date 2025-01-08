@@ -57,9 +57,10 @@ class CommentListView(APIView):
         try:
             pin = Pin.objects.get(pk=pk)
             comments = pin.comments.all()
-            comments_ser = CommentSerializer(comments, many=True)
+            comments_ser = CommentSerializer(comments, many=True,context={"request":rq})
             return Response(comments_ser.data, status=200)
-        except:
+        except Exception as e:
+            print("E"*100,e)
             return Response({"error": "No pins found"}, status=404)
 
     def post(self, rq, pk):
