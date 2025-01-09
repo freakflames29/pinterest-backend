@@ -9,6 +9,7 @@ from .models import AccountInfo
 from django.db.utils import IntegrityError
 from .permissions import IsOwner
 from django.contrib.auth.models import User
+
 class ProfileGetView(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
@@ -19,7 +20,8 @@ class ProfileGetView(APIView):
             return Response(infoser.data,status=200)
         except AccountInfo.DoesNotExist as e :
             return Response({"error":"Your profile is not available, kindly create one"},status=404)
-        except:
+        except Exception as e:
+            print("GET VIEW ------------"*10,e)
             return Response({"error":"Something went wrong"},status=400)
 
 
@@ -65,6 +67,7 @@ class ProfileUpdateView(APIView):
             print("*"*10,e)
             return Response({"error":"Profile not found"},status=404)
         except Exception as e:
+            print("EEE"*100,e)
             return Response({"error":"Something went wrong"},status=400)
             
 class ProfileUpdateV2(APIView):
