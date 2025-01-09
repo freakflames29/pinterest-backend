@@ -77,10 +77,10 @@ class ProfileUpdateV2(APIView):
     def patch(self,rq):
         info = rq.user.info
 
-        info_ser = AccountInfoSerializer(info,data=rq.data,partial=True)
+        info_ser = AccountInfoSerializer(info,data=rq.data,partial=True,context={"request":rq})
         if info_ser.is_valid():
             info_ser.save()
             return Response(info_ser.data,status=200)
-        else:
+        else:   
             return Response(info_ser.errors,data=400)
         
