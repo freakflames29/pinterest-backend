@@ -18,7 +18,7 @@ class PinListView(generics.ListAPIView):
     queryset = Pin.objects.all()
     serializer_class = PinSerializer
     filter_backends = [SearchFilter]
-    search_fields = ["title"]
+    search_fields = ["title","desc"]
 
 
 class PinCreateView(generics.CreateAPIView):

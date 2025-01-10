@@ -83,4 +83,3 @@ class ProfileUpdateV2(APIView):
             return Response(info_ser.data,status=200)
         else:   
             return Response(info_ser.errors,data=400)
-        
