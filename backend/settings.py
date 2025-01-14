@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'comment',
     # 'userprofile'
     'accountinfo',
+    'category'
 ]
 
 MIDDLEWARE = [

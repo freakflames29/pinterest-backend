@@ -10,5 +10,6 @@ urlpatterns = [
     path("board/", include("board.urls")),
     path("pin/", include("pin.urls")),
     path("comments/", include("comment.urls")),
-    path("profile/",include("accountinfo.urls"))
+    path("profile/",include("accountinfo.urls")),
+    path("category/",include("category.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
