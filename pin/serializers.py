@@ -6,6 +6,7 @@ class PinSerializer(ModelSerializer):
     username = SerializerMethodField(read_only=True)
     user_image =  SerializerMethodField(read_only=True)
     # photo_url = SerializerMethodField(read_only=True)
+    category_name = SerializerMethodField(read_only=True)
     
     
    
@@ -35,9 +36,12 @@ class PinSerializer(ModelSerializer):
                
         except:
             return "#"
+    
+    def get_category_name(self,obj):
+        return obj.category.title
 
     class Meta:
         model = Pin
         fields = ["id", "title", "link", "desc",
-                  "user", "username", "image","user_image"]
+                  "user", "username", "image","user_image","category","category_name"]
         read_only_fields = ["user"]
