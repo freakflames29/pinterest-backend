@@ -5,7 +5,7 @@ from category.models import Category
 
 
 class Pin(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100,blank=False)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="pins")
     link = models.CharField(max_length=255)
