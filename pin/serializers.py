@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer, SerializerMethodField
+from rest_framework.serializers import ModelSerializer, SerializerMethodField,ValidationError
 from .models import Pin
 
 
@@ -45,3 +45,8 @@ class PinSerializer(ModelSerializer):
         fields = ["id", "title", "link", "desc",
                   "user", "username", "image","user_image","category","category_name"]
         read_only_fields = ["user"]
+        
+        def validate_title(self,value):
+            if not value.strip():
+                raise ValidationError("Title Can not be blank")
+            return value
